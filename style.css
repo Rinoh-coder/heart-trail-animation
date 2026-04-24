@@ -1,32 +1,126 @@
-body{
+/*  */
+/* STYLES POUR LE CORPS DE LA PAGE (BODY)   */
+/*  */
+
+body {
+    /* margin: 0 → Enlève les marges par défaut du navigateur */
+    /* Par défaut, body a des marges automatiques (environ 8px) */
+    /* En les mettant à 0, on utilise TOUTE la surface disponible */
     margin: 0;
+    
+    /* height: 100vh → Hauteur = 100% de la hauteur de l'écran */
+    /* vh = "viewport height" (hauteur de la fenêtre du navigateur) */
+    /* 100vh = toute la hauteur visible, peu importe la taille de l'écran */
     height: 100vh;
+    
+    /* background-color: black → Fond noir */
+    /* Contraste parfait pour voir les cœurs colorés qui apparaissent */
     background-color: black;
+    
+    /* overflow: hidden → Cache tout ce qui dépasse */
+    /* Empêche l'apparition de barres de défilement */
+    /* Utile car nos cœurs vont montrès haut avec translate(-50%, -5000%) */
     overflow: hidden;
 }
 
-span{
+/*  */
+/* STYLES POUR LES CŒURS (SPAN)            */
+/*  */
+
+span {
+    /* background: url(...) → Définit une image de fond */
+    /* L'URL pointe vers une icône de cœur en ligne */
+    /* L'image va servir de "masque" pour nos cœurs */
     background: url("https://cdn-icons-png.flaticon.com/128/18444/18444657.png");
+    
+    /*  TAILLE DE BASE DU CŒUR  */
+    /* Largeur et hauteur avant l'animation */
+    /* Ces valeurs seront ÉCRASÉES par le JavaScript */
+    /* Le JS définit des tailles aléatoires (entre 0 et 100px) */
     height: 100px;
     width: 100px;
+    
+    /*  POSITION ABSOLUE  */
+    /* position: absolute → Sort l'élément du flux normal de la page */
+    /* L'élément peut être placé N'IMPORTE OÙ avec left/top */
+    /* Les autres éléments l'ignorent (ils passent "dessous") */
     position: absolute;
+    
+    /*  DÉSACTIVER LES INTERACTIONS  */
+    /* pointer-events: none → Le cœur ne réagit PAS aux clics/souris */
+    /* La souris traverse le cœur comme s'il n'existait pas */
+    /* TRÈS IMPORTANT : sans ça, les cœurs bloqueraient les mouvements */
     pointer-events: none;
+    
+    /*  ADAPTER L'IMAGE  */
+    /* background-size: cover → L'image remplit TOUT l'espace */
+    /* Elle s'étire ou se réduit pour couvrir toute la largeur/hauteur */
+    /* Garde les proportions, mais peut rogner les bords */
     background-size: cover;
+    
+    /*  POSITION INITIALE  */
+    /* left: 50% → À 50% de la largeur du parent (body) */
+    /* top: 50% → À 50% de la hauteur du parent (body) */
+    /* Cela place le coin HAUT-GAUCHE du cœur au milieu de l'écran */
     left: 50%;
     top: 50%;
-    transform: translate( -50%, -50%);
+    
+    /* CENTRER LE CŒUR  */
+    /* transform: translate(-50%, -50%) → DÉCALE le cœur */
+    /* -50% en horizontal = décale de la MOITIÉ de sa propre largeur */
+    /* -50% en vertical = décale de la MOITIÉ de sa propre hauteur */
+    /* RÉSULTAT : le CENTRE du cœur est pile au milieu de l'écran */
+    /* C'est la technique classique pour centrer parfaitement */
+    transform: translate(-50%, -50%);
+    
+    /* ANIMATION */
+    /* animation: nom durée type_accélération */
+    /* animate = nom de l'animation (définie plus bas) */
+    /* 6s = 6 secondes (l'animation dure 6 secondes) */
+    /* linear = vitesse constante (pas d'accélération au début ou fin) */
     animation: animate 6s linear;
 }
 
+/*  */
+/* DÉFINITION DE L'ANIMATION                */
+/*  */
+
+/* @keyframes = "images clés" = les étapes de l'animation */
+/* animate = nom de l'animation (référencée plus haut) */
 @keyframes animate {
-    0%{
-        transform: translate( -50%, -50%);
+    /* ÉTAPE 0% : DÉBUT de l'animation (0 secondes) */
+    0% {
+        /* transform: translate(-50%, -50%) → Position de départ */
+        /* Le cœur est CENTRÉ sur le point de départ (la souris) */
+        /* Le JS a déjà positionné le cœur avec left/top */
+        /* Cette transform vient SUPPORTER le centrage */
+        transform: translate(-50%, -50%);
+        
+        /* opacity: 1 → Totalement OPAQUE (visible à 100%) */
         opacity: 1;
+        
+        /* filter: hue-rotate(0) → Pas de changement de couleur */
+        /* hue-rotate = rotation du cercle chromatique (teinte) */
+        /* 0 = commence avec la couleur ORIGINALE (rouge du cœur) */
         filter: hue-rotate(0);
     }
-    100%{
-        transform: translate( -50%, -5000%);
+    
+    /* ÉTAPE 100% : FIN de l'animation (après 6 secondes) */
+    100% {
+        /* transform: translate(-50%, -5000%) → Position de fin */
+        /* Le cœur monte VERTICALEMENT de 5000% de sa hauteur */
+        /* Exemple : cœur de 50px → monte de 2500px (50 * 50) */
+        /* L'overflow: hidden du body cachera le cœur quand il sort de l'écran */
+        transform: translate(-50%, -5000%);
+        
+        /* opacity: 0 → Complètement TRANSPARENT (invisible) */
+        /* Le cœur disparaît progressivement pendant les 6 secondes */
         opacity: 0;
+        
+        /* filter: hue-rotate(720deg) → Rotation de couleur complète */
+        /* 720deg = 2 tours complets du cercle chromatique (360° × 2) */
+        /* Le cœur passe par TOUTES les couleurs : rouge → orange → jaune → vert → bleu → violet → rouge */
+        /* Effet arc-en-ciel magnifique ! */
         filter: hue-rotate(720deg);
-    } 
+    }
 }
